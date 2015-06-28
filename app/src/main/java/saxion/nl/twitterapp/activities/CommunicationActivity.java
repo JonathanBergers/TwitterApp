@@ -40,6 +40,8 @@ public class CommunicationActivity extends FragmentActivity{
 
         TaskGet taskGet = (TaskGet) new TaskGet("https://api.twitter.com/1.1/statuses/mentions_timeline.json").execute();
 
+
+
     }
 
 
