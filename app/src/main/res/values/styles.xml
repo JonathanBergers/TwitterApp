@@ -1,8 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-    </style>
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
 
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorPrimary">#ff565aff</item>
+        <item name="colorPrimaryDark">#ff6444ff</item>
+        <item name="colorAccent">#ffd0cdff</item>
+
+    </style>
 </resources>

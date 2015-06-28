@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="android:Theme.Material.Light">
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorPrimary">#ff565aff</item>
+        <item name="colorPrimaryDark">#ff6444ff</item>
+        <item name="colorAccent">#ffd0cdff</item>
+
     </style>
 </resources>

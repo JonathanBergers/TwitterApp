@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import saxion.nl.twitterapp.model.Model;
 import saxion.nl.twitterapp.model.Status;
 import saxion.nl.twitterapp.model.User;
 
@@ -17,16 +18,33 @@ public class JsonConverter {
 
 
 
-    public User toUser(JSONObject userObject) throws JSONException {
+    public User toUser(JSONObject userObject) {
 
-        User user = new User(
-                userObject.getString("name"),
-                userObject.getInt("id"),
-                userObject.getString("profile_image_url"),
-                userObject.getString("screen_name"));
+        User user = null;
+        try {
+            user = new User(
+                    userObject.getString("name"),
+                    userObject.getInt("id"),
+                    userObject.getString("profile_image_url"),
+                    userObject.getString("screen_name"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 
-        return user;
+        final User finalUser = user;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                finalUser.setBitmap(Model.getInstance().retrieveImage(finalUser.getProfileImageUrl()));
+            }
+
+        }).start();
+
+        return finalUser;
+
+
 
 
 

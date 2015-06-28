@@ -1,5 +1,8 @@
 package saxion.nl.twitterapp.model;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -12,14 +15,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.basic.DefaultOAuthProvider;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
-import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
 import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
@@ -70,6 +77,13 @@ public class Model implements FunctionsGet, FunctionsPost{
         return oAuthConsumer;
     }
 
+
+    @Override
+    public User retrieveCurrenntUser() {
+        HttpGet httpGet = new HttpGet("https://api.twitter.com/1.1/account/verify_credentials.json");
+        return converter.toUser(execute(httpGet));
+
+    }
 
     @Override
     public List<Status> retrieveTimeline() {
@@ -123,6 +137,31 @@ public class Model implements FunctionsGet, FunctionsPost{
 
     }
 
+
+    public Bitmap retrieveImage(String pinURL){
+
+        Bitmap bitmap = null;
+        URL aURL = null;
+        try {
+            aURL = new URL(pinURL);
+            URLConnection conn = aURL.openConnection();
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(is);
+            bitmap = BitmapFactory.decodeStream(bis);
+            bis.close();
+            is.close();
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+
+    }
 
 
 

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout
+    android:id="@+id/swipyrefreshlayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:direction="both">
+
+
+    <com.dexafree.materialList.view.MaterialListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listView"
+        android:layout_gravity="center_horizontal" />
+
+</com.orangegangsters.github.swipyrefreshlayout.library.SwipyRefreshLayout>
+
+    <view
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        class="com.melnykov.fab.FloatingActionButton"
+        android:id="@+id/fabItem"
+        android:layout_gravity="right|bottom"
+        android:src="@drawable/ic_add_white_24dp"
+        android:layout_marginLeft="16dp"
+        android:visibility="invisible"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true" />
+
+</RelativeLayout>

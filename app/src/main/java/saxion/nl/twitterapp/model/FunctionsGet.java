@@ -8,6 +8,7 @@ import java.util.List;
 public interface FunctionsGet {
 
 
+    public User retrieveCurrenntUser();
 
     public List<Status> retrieveTimeline();
 

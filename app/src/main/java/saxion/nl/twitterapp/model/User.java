@@ -1,12 +1,14 @@
 package saxion.nl.twitterapp.model;
 
+import android.graphics.Bitmap;
+
 public class User {
 
 	private String name;
 	private String screenName;
 	private long id;
 	private String profileImageUrl;
-
+	private Bitmap bitmap;
 
 	public User(String name, long id, String profileImageUrl, String screenName) {
 		this.name = name;
@@ -30,11 +32,11 @@ public class User {
 	}
 
 
+	public Bitmap getBitmap() {
+		return bitmap;
+	}
 
-
-
-
-
-
-
+	public void setBitmap(Bitmap bitmap) {
+		this.bitmap = bitmap;
+	}
 }

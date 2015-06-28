@@ -159,7 +159,7 @@ public class AuthorizeActivity extends Activity {
         @Override
         protected void onPostExecute(String authUrl) {
 
-        startActivity(new Intent(AuthorizeActivity.this, CommunicationActivity.class));
+        startActivity(new Intent(AuthorizeActivity.this, BaseActivity.class));
 
 
         }

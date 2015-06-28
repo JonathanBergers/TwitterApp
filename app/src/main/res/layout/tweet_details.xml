@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:expandablepanel="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent">
+
+    <com.jorgecastilloprz.expandablepanel.ExpandablePanelView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_floating_material_light"
+
+        expandablepanel:completionPercent=".8"
+        expandablepanel:completeExpandAnimationSpeed="150"
+        expandablepanel:completeShrinkAnimationSpeed="200"
+        android:id ="@+id/expandableView"
+        >
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editTextItemTitle"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            app:met_floatingLabelText="Titel"
+            app:met_floatingLabel="normal"
+            app:met_primaryColor="@color/primary"
+            app:met_floatingLabelTextSize="16dp"
+            android:hint="bericht"
+            android:paddingLeft="@dimen/abc_text_size_small_material"
+            />
+
+
+        </com.jorgecastilloprz.expandablepanel.ExpandablePanelView>
+</RelativeLayout>
