@@ -207,9 +207,13 @@ public final class BaseFragment extends MaterialListViewFragment<Status> {
                     @Override
                     public void run() {
 
+                        if(tweets != null){
+                            items = tweets;
+                            //listView.clear();
+                            updateCards();
 
-                        //listView.clear();
-                        updateCards();
+                        }
+
                         refreshLayout.setRefreshing(false);
 
 

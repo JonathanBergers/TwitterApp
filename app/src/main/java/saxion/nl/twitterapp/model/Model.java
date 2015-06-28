@@ -126,16 +126,16 @@ public class Model implements FunctionsGet, FunctionsPost{
     public void retweetStatus(Status status) {
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
         nameValuePairs.add(new BasicNameValuePair("id", ""+status.getId()));
-        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/statuses/retweet/:" + status.getId() + ".json");
+        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/statuses/retweet/" + status.getId() + ".json");
         try {
             httpPost.setHeader("Accept", "*/*");
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-
+            httpPost.setHeader("Authorization", "Bearer " + oAuthConsumer.getToken());
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        Log.d("MODEL", execute(httpPost).toString());
+        Log.d("MODELRETW", execute(httpPost).toString());
 
 
     }
@@ -145,16 +145,16 @@ public class Model implements FunctionsGet, FunctionsPost{
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
         nameValuePairs.add(new BasicNameValuePair("id", ""+status.getId()));
-        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/favorites/create.json?" + status.getId());
+        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/favorites/create.json?");
         try {
             httpPost.setHeader("Accept", "*/*");
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-
+            httpPost.setHeader("Authorization", "Bearer " + oAuthConsumer.getToken());
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        Log.d("MODEL" , execute(httpPost).toString());
+        Log.d("MODELFAV" , execute(httpPost).toString());
 
     }
 
@@ -165,17 +165,18 @@ public class Model implements FunctionsGet, FunctionsPost{
         nameValuePairs.add(new BasicNameValuePair("status", tweetText));
 
 
-        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/statuses/update.json?" + tweetText);
+        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/statuses/update.json?");
         try {
             httpPost.setHeader("Accept", "*/*");
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-
+            httpPost.setHeader("Authorization", "Bearer " + oAuthConsumer.getToken());
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-        return converter.toStatus(execute(httpPost));
+        Status updatedStatus = converter.toStatus(execute(httpPost));
+        Log.d("MODELStatus" , updatedStatus.getText());
+        return updatedStatus;
 
     }
 
