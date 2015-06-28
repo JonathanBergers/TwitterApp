@@ -5,6 +5,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
+import oauth.signpost.basic.DefaultOAuthProvider;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
 import saxion.nl.twitterapp.util.Resources;
@@ -34,7 +35,7 @@ public class Model {
     public Model() {
         oAuthConsumer = new CommonsHttpOAuthConsumer(Resources.CONSUMER_KEY,
                 Resources.CONSUMER_SECRET);
-        oAuthProvider = new CommonsHttpOAuthProvider(
+        oAuthProvider = new DefaultOAuthProvider(
                 "https://api.twitter.com/oauth/request_token",
                 "https://api.twitter.com/oauth/access_token",
                 "https://api.twitter.com/oauth/authorize");

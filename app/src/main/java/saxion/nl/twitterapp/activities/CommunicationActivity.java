@@ -35,10 +35,10 @@ public class CommunicationActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
          consumer = Model.getInstance().getoAuthConsumer();
-        httpClient = new DefaultHttpClient(new BasicHttpParams());
+            httpClient = new DefaultHttpClient(new BasicHttpParams());
 
 
-        TaskGet taskGet = new TaskGet("https://api.twitter.com/1.1/statuses/home_timeline.json");
+        TaskGet taskGet = (TaskGet) new TaskGet("https://api.twitter.com/1.1/statuses/mentions_timeline.json").execute();
 
     }
 
