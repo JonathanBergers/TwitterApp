@@ -136,7 +136,7 @@ public final class BaseFragment extends MaterialListViewFragment<Status> {
                 try {
 
 
-                    Model.getInstance().favoriteStatus(status);
+                    Model.getInstance().retweetStatus(status);
 
 
                 } catch (Exception e) {
@@ -166,7 +166,7 @@ public final class BaseFragment extends MaterialListViewFragment<Status> {
             public void run() {
                 try {
 
-                    Model.getInstance().retweetStatus(status);
+                    Model.getInstance().favoriteStatus(status);
 
 
                 } catch (Exception e) {

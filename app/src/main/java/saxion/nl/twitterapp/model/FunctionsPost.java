@@ -6,9 +6,9 @@ package saxion.nl.twitterapp.model;
 public interface FunctionsPost {
 
 
-    public Status retweetStatus(Status status);
+    public void retweetStatus(Status status);
 
-    public Status favoriteStatus(Status status);
+    public void favoriteStatus(Status status);
 
     public Status updateStatus(String tweetText);
 

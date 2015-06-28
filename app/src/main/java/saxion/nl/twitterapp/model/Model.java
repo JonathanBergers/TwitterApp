@@ -2,14 +2,20 @@ package saxion.nl.twitterapp.model;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,9 +24,11 @@ import org.json.JSONObject;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import oauth.signpost.OAuthConsumer;
@@ -115,24 +123,58 @@ public class Model implements FunctionsGet, FunctionsPost{
 
 
     @Override
-    public Status retweetStatus(Status status) {
+    public void retweetStatus(Status status) {
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+        nameValuePairs.add(new BasicNameValuePair("id", ""+status.getId()));
         HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/statuses/retweet/:" + status.getId() + ".json");
-        return converter.toStatus(execute(httpPost));
+        try {
+            httpPost.setHeader("Accept", "*/*");
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Log.d("MODEL", execute(httpPost).toString());
 
 
     }
 
     @Override
-    public Status favoriteStatus(Status status) {
-        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/favorites/create.json?id=" + status.getId());
-        return converter.toStatus(execute(httpPost));
+    public void favoriteStatus(Status status) {
+
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+        nameValuePairs.add(new BasicNameValuePair("id", ""+status.getId()));
+        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/favorites/create.json?" + status.getId());
+        try {
+            httpPost.setHeader("Accept", "*/*");
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Log.d("MODEL" , execute(httpPost).toString());
 
     }
 
     @Override
     public Status updateStatus(String tweetText) {
-        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/statuses/update.json");
-        httpPost.setParams(new BasicHttpParams().setParameter("status", tweetText));
+
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+        nameValuePairs.add(new BasicNameValuePair("status", tweetText));
+
+
+        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/statuses/update.json?" + tweetText);
+        try {
+            httpPost.setHeader("Accept", "*/*");
+            httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, HTTP.UTF_8));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         return converter.toStatus(execute(httpPost));
 
     }
@@ -220,6 +262,13 @@ public class Model implements FunctionsGet, FunctionsPost{
 
                 JSONObject jsonObject = new JSONObject(responseString);
                 return jsonObject.getJSONArray("statuses");
+
+            }
+
+            if(responseString.startsWith("{\"users")){
+
+                JSONObject jsonObject = new JSONObject(responseString);
+                return jsonObject.getJSONArray("users");
 
             }
             return new JSONArray(responseString);
