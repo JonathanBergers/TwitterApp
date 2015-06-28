@@ -182,7 +182,7 @@ public class BaseActivity extends FragmentActivity {
     protected void postTweet(final String text){
 
 
-        Thread a = new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
 
@@ -204,7 +204,7 @@ public class BaseActivity extends FragmentActivity {
                 });
 
             }
-        });
+        }).start();
 
     }
 

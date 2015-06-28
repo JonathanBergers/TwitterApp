@@ -145,7 +145,7 @@ public class Model implements FunctionsGet, FunctionsPost{
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
         nameValuePairs.add(new BasicNameValuePair("id", ""+status.getId()));
-        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/favorites/create.json?");
+        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/favorites/create.json");
         try {
             httpPost.setHeader("Accept", "*/*");
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
@@ -165,7 +165,7 @@ public class Model implements FunctionsGet, FunctionsPost{
         nameValuePairs.add(new BasicNameValuePair("status", tweetText));
 
 
-        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/statuses/update.json?");
+        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/statuses/update.json");
         try {
             httpPost.setHeader("Accept", "*/*");
             httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");

@@ -150,7 +150,6 @@ public class AuthorizeActivity extends Activity {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            Log.d("CONSUMER SECRET", " JE KK MOEDRERR");
             return null;
 
 
