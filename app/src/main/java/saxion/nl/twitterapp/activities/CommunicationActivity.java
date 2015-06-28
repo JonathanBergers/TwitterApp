@@ -42,7 +42,7 @@ public class CommunicationActivity extends FragmentActivity{
              @Override
               public void run() {
 
-                 List<Status> statuses = Model.getInstance().retrieveTimeline();
+                 List<Status> statuses = Model.getInstance().searchTweets("Jemoeder");
 
 
                  for(Status s : statuses){
@@ -52,6 +52,9 @@ public class CommunicationActivity extends FragmentActivity{
 
               }
         }).start();
+
+
+
 
 
 

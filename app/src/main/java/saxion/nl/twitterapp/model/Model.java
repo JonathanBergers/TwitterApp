@@ -3,6 +3,7 @@ package saxion.nl.twitterapp.model;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
@@ -30,7 +31,7 @@ import saxion.nl.twitterapp.util.Resources;
  */
 
 
-public class Model implements FunctionsGet{
+public class Model implements FunctionsGet, FunctionsPost{
 
     private static Model instance = null;
 
@@ -79,18 +80,51 @@ public class Model implements FunctionsGet{
 
     @Override
     public List<Status> retrieveTimeline(User user) {
-        return null;
+        HttpGet httpGet = new HttpGet("https://api.twitter.com/1.1/statuses/user_timeline.json" + "?user_id=" + user.getId() );
+        return converter.toStatuses(executeArray(httpGet));
+
     }
 
     @Override
     public List<User> retrieveFriends() {
-        return null;
+        HttpGet httpGet = new HttpGet("https://api.twitter.com/1.1/friends/list.json?");
+        return converter.toUsers(executeArray(httpGet));
     }
 
     @Override
     public List<Status> searchTweets(String search) {
-        return null;
+        HttpGet httpGet = new HttpGet("https://api.twitter.com/1.1/search/tweets.json?q=" + search );
+        return converter.toStatuses(executeArray(httpGet));
     }
+
+
+
+
+    @Override
+    public Status retweetStatus(Status status) {
+        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/statuses/retweet/:" + status.getId() + ".json");
+        return converter.toStatus(execute(httpPost));
+
+
+    }
+
+    @Override
+    public Status favoriteStatus(Status status) {
+        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/favorites/create.json?id=" + status.getId());
+        return converter.toStatus(execute(httpPost));
+
+    }
+
+    @Override
+    public Status updateStatus(String tweetText) {
+        HttpPost httpPost = new HttpPost("https://api.twitter.com/1.1/statuses/update.json");
+        httpPost.setParams(new BasicHttpParams().setParameter("status", tweetText));
+        return converter.toStatus(execute(httpPost));
+
+    }
+
+
+
 
 
 
@@ -141,6 +175,14 @@ public class Model implements FunctionsGet{
         try {
 
             String responseString = responseToString(httpClient.execute(httpRequestBase));
+
+            // bij search
+            if(responseString.startsWith("{\"statuses")){
+
+                JSONObject jsonObject = new JSONObject(responseString);
+                return jsonObject.getJSONArray("statuses");
+
+            }
             return new JSONArray(responseString);
 
 
@@ -160,8 +202,6 @@ public class Model implements FunctionsGet{
 
         return EntityUtils.toString(response.getEntity());
     }
-
-
 
 
 

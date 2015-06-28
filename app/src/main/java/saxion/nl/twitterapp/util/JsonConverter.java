@@ -32,21 +32,33 @@ public class JsonConverter {
 
     }
 
-    public Status toStatus(JSONObject statusObject) throws JSONException {
+    public Status toStatus(JSONObject statusObject){
 
 
         JSONObject userObject;
+        User user;
+        Status s = null;
 
-        User user = toUser(statusObject.getJSONObject("user"));
+        try {
 
-        Status s = new Status(statusObject.getLong("id"),
-                        statusObject.getString("created_at"),
-                        statusObject.getInt("favorite_count"),
-                        statusObject.getBoolean("retweeted"),
-                        statusObject.getBoolean("favorited"),
-                        statusObject.getInt("retweet_count"),
-                        statusObject.getString("text"),
-                        user);
+            user = toUser(statusObject.getJSONObject("user"));
+
+            s = new Status(statusObject.getLong("id"),
+                    statusObject.getString("created_at"),
+                    statusObject.getInt("favorite_count"),
+                    statusObject.getBoolean("retweeted"),
+                    statusObject.getBoolean("favorited"),
+                    statusObject.getInt("retweet_count"),
+                    statusObject.getString("text"),
+                    user);
+
+
+
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return s;
 
@@ -66,6 +78,24 @@ public class JsonConverter {
         }
 
         return statuses;
+
+    }
+
+    public List<User> toUsers(JSONArray usersArray){
+
+        List<User> users = new ArrayList<>();
+
+        for (int i = 0; i < usersArray.length(); i++) {
+            try {
+                users.add(toUser(usersArray.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return users;
+
 
     }
 
