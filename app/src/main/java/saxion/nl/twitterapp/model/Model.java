@@ -1,11 +1,13 @@
 package saxion.nl.twitterapp.model;
 
-import android.content.SharedPreferences;
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
+import saxion.nl.twitterapp.util.Resources;
 
 /**
  * Created by jonathan on 28-6-15.
@@ -18,7 +20,7 @@ public class Model {
 
     private OAuthConsumer oAuthConsumer;
     private OAuthProvider oAuthProvider;
-    private SharedPreferences sharedPreferences;
+    private HttpClient httpClient;
 
     public static Model getInstance(){
         if(instance == null){
@@ -36,6 +38,7 @@ public class Model {
                 "https://api.twitter.com/oauth/request_token",
                 "https://api.twitter.com/oauth/access_token",
                 "https://api.twitter.com/oauth/authorize");
+        httpClient = new DefaultHttpClient();
 
 
     }
@@ -48,6 +51,12 @@ public class Model {
     public OAuthConsumer getoAuthConsumer() {
         return oAuthConsumer;
     }
+
+
+
+
+
+
 
 
 }

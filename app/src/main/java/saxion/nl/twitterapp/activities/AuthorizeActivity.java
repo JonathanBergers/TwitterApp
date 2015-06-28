@@ -2,10 +2,10 @@ package saxion.nl.twitterapp.activities;
 
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
@@ -18,7 +18,7 @@ import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
 import oauth.signpost.exception.OAuthNotAuthorizedException;
-import saxion.nl.twitterapp.model.Resources;
+import saxion.nl.twitterapp.util.Resources;
 import topicus.nl.twitterapp.R;
 import saxion.nl.twitterapp.model.Model;
 
@@ -148,6 +148,8 @@ public class AuthorizeActivity extends Activity {
             editor.putString(OAuth.OAUTH_TOKEN, token);
             editor.putString(OAuth.OAUTH_TOKEN_SECRET, tokenSecret);
             editor.commit();
+
+            startActivity(new Intent(AuthorizeActivity.this, CommunicationActivity.class));
         }
     }
 

@@ -1,4 +1,4 @@
-package saxion.nl.twitterapp.model;
+package saxion.nl.twitterapp.util;
 
 /**
  * Created by jonathan on 28-6-15.
