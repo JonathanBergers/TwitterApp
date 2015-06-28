@@ -7,6 +7,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +22,7 @@ import oauth.signpost.commonshttp.CommonsHttpOAuthProvider;
 import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
+import saxion.nl.twitterapp.util.JsonConverter;
 import saxion.nl.twitterapp.util.Resources;
 
 /**
@@ -35,6 +37,7 @@ public class Model implements FunctionsGet{
     private OAuthConsumer oAuthConsumer;
     private OAuthProvider oAuthProvider;
     private HttpClient httpClient;
+    private JsonConverter converter;
 
     public static Model getInstance(){
         if(instance == null){
@@ -53,7 +56,7 @@ public class Model implements FunctionsGet{
                 "https://api.twitter.com/oauth/access_token",
                 "https://api.twitter.com/oauth/authorize");
         httpClient = new DefaultHttpClient(new BasicHttpParams());
-
+        converter = new JsonConverter();
 
     }
 
@@ -69,17 +72,9 @@ public class Model implements FunctionsGet{
 
     @Override
     public List<Status> retrieveTimeline() {
+        HttpGet httpGet = new HttpGet("https://api.twitter.com/1.1/statuses/home_timeline.json");
+        return converter.toStatuses(executeArray(httpGet));
 
-//        Thread t = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//
-//
-//            }
-//        })
-
-        return null;
     }
 
     @Override
@@ -96,6 +91,9 @@ public class Model implements FunctionsGet{
     public List<Status> searchTweets(String search) {
         return null;
     }
+
+
+
 
 
 
@@ -129,10 +127,41 @@ public class Model implements FunctionsGet{
     }
 
 
+    private JSONArray executeArray(HttpRequestBase httpRequestBase){
+
+        try {
+            oAuthConsumer.sign(httpRequestBase);
+        } catch (OAuthMessageSignerException e) {
+            e.printStackTrace();
+        } catch (OAuthExpectationFailedException e) {
+            e.printStackTrace();
+        } catch (OAuthCommunicationException e) {
+            e.printStackTrace();
+        }
+        try {
+
+            String responseString = responseToString(httpClient.execute(httpRequestBase));
+            return new JSONArray(responseString);
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        return null;
+
+    }
+
     private String responseToString(HttpResponse response) throws IOException {
 
         return EntityUtils.toString(response.getEntity());
     }
+
+
 
 
 

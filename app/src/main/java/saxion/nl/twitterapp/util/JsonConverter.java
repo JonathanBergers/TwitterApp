@@ -1,7 +1,11 @@
 package saxion.nl.twitterapp.util;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import saxion.nl.twitterapp.model.Status;
 import saxion.nl.twitterapp.model.User;
@@ -45,6 +49,23 @@ public class JsonConverter {
                         user);
 
         return s;
+
+    }
+
+    public List<Status> toStatuses(JSONArray statusArray){
+
+        List<Status> statuses = new ArrayList<>();
+
+        for (int i = 0; i < statusArray.length(); i++) {
+            try {
+                statuses.add(toStatus(statusArray.getJSONObject(i)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return statuses;
 
     }
 
