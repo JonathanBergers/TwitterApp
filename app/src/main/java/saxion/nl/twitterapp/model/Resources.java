@@ -10,6 +10,6 @@ public class Resources {
     public final static String CONSUMER_SECRET = "m2cNqXOmSKZqWLxmlUwkw6HHHjxJuHvHMv6PuLHtHMJJmYZCSB";
 
 
-    public final static String INTENT_GRANDACCESS = "access_url";
+    public final static String SHARED_PREFERENCES = "shared_preferences";
 
 }

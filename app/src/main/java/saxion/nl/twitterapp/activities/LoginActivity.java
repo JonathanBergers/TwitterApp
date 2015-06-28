@@ -1,15 +1,17 @@
-package saxion.nl.twitterapp;
+package saxion.nl.twitterapp.activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import oauth.signpost.OAuth;
-import saxion.nl.twitterapp.activities.GrandAccessActivity;
-import saxion.nl.twitterapp.model.Model;
+import saxion.nl.twitterapp.activities.AuthorizeActivity;
 import saxion.nl.twitterapp.model.Resources;
+import topicus.nl.twitterapp.R;
 
 
 public class LoginActivity extends Activity {
@@ -28,20 +30,23 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.activity_login);
 
 
-        Model.getInstance();
-        RequestTokenTask tokenTask = new RequestTokenTask();
-        tokenTask.execute();
+
         if(checkFirstTime()){
 
+            Toast.makeText(this, "First time", Toast.LENGTH_SHORT).show();
 
+        }else {
+            Toast.makeText(this, "Not first time", Toast.LENGTH_SHORT).show();
         }
+
+        startActivity(new Intent(this, AuthorizeActivity.class));
 
 
 
     }
 
     private boolean checkFirstTime(){
-        String oAuthString = PreferenceManager.getDefaultSharedPreferences(this).getString(OAuth.OAUTH_TOKEN_SECRET, null);
+        String oAuthString = getSharedPreferences(Resources.SHARED_PREFERENCES, MODE_PRIVATE).getString(OAuth.OAUTH_TOKEN_SECRET, null);
         if(oAuthString == null){
 
             return true;

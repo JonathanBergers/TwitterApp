@@ -37,6 +37,7 @@ public class Model {
                 "https://api.twitter.com/oauth/access_token",
                 "https://api.twitter.com/oauth/authorize");
 
+
     }
 
     public OAuthProvider getoAuthProvider() {

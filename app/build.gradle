@@ -26,9 +26,9 @@ dependencies {
     compile 'oauth.signpost:signpost-commonshttp4:1.2.1.2'
 
     //android support libraries
-    compile 'com.android.support:support-v4:22.1.1'
+    compile 'com.android.support:support-v4:22.2.0'
     compile 'com.android.support:support-v13:22.1.1'
-    compile 'com.android.support:recyclerview-v7:+'
+    compile 'com.android.support:recyclerview-v7:22.2.0'
 
     //material design
     compile('com.mikepenz:materialdrawer:3.0.7@aar') {

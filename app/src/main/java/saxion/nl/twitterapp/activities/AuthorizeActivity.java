@@ -18,12 +18,12 @@ import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
 import oauth.signpost.exception.OAuthNotAuthorizedException;
+import saxion.nl.twitterapp.model.Resources;
 import topicus.nl.twitterapp.R;
 import saxion.nl.twitterapp.model.Model;
-import saxion.nl.twitterapp.model.Resources;
 
 
-public class GrandAccessActivity extends Activity {
+public class AuthorizeActivity extends Activity {
 
 
     private EditText editTextPin;
@@ -139,7 +139,7 @@ public class GrandAccessActivity extends Activity {
         protected void onPostExecute(Void aVoid) {
 
             // save tokens
-            final SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(GrandAccessActivity.this).edit();
+            final SharedPreferences.Editor editor = getSharedPreferences(Resources.SHARED_PREFERENCES, MODE_PRIVATE).edit();
 
             String token = Model.getInstance().getoAuthConsumer().getToken();
             String tokenSecret = Model.getInstance().getoAuthConsumer().getTokenSecret();
