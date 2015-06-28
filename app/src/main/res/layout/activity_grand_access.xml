@@ -7,19 +7,6 @@
     tools:context="jofalco.twitter_client.twitter.activities.GrandAccessActivity"
     android:orientation="vertical">
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/editTextPin" />
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="ok"
-        android:id="@+id/buttonSendPin" />
-
     <WebView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"

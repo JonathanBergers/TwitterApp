@@ -3,6 +3,8 @@ package saxion.nl.twitterapp.model;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.util.List;
+
 import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.basic.DefaultOAuthProvider;
@@ -15,7 +17,7 @@ import saxion.nl.twitterapp.util.Resources;
  */
 
 
-public class Model {
+public class Model implements FunctionsGet{
 
     private static Model instance = null;
 
@@ -25,7 +27,7 @@ public class Model {
 
     public static Model getInstance(){
         if(instance == null){
-            return new Model();
+            instance =  new Model();
         }
         return instance;
 
@@ -54,10 +56,23 @@ public class Model {
     }
 
 
+    @Override
+    public List<Status> retrieveTimeline() {
+        return null;
+    }
 
+    @Override
+    public List<Status> retrieveTimeline(User user) {
+        return null;
+    }
 
+    @Override
+    public List<User> retrieveFriends() {
+        return null;
+    }
 
-
-
-
+    @Override
+    public List<Status> searchTweets(String search) {
+        return null;
+    }
 }

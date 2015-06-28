@@ -3,22 +3,21 @@ package saxion.nl.twitterapp.activities;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 
-import oauth.signpost.OAuth;
+import oauth.signpost.OAuthConsumer;
 import oauth.signpost.OAuthProvider;
 import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
 import oauth.signpost.exception.OAuthNotAuthorizedException;
-import saxion.nl.twitterapp.util.Resources;
 import topicus.nl.twitterapp.R;
 import saxion.nl.twitterapp.model.Model;
 
@@ -26,10 +25,7 @@ import saxion.nl.twitterapp.model.Model;
 public class AuthorizeActivity extends Activity {
 
 
-    private EditText editTextPin;
-    private WebView webViewPin;
-    private Button buttonPin;
-
+    private WebView webView;
 
 
     @Override
@@ -38,23 +34,41 @@ public class AuthorizeActivity extends Activity {
         setContentView(R.layout.activity_grand_access);
 
 
-        editTextPin = (EditText) findViewById(R.id.editTextPin);
-        webViewPin = (WebView) findViewById(R.id.webViewPin);
-        buttonPin = (Button) findViewById(R.id.buttonSendPin);
-        webViewPin.getSettings().setBuiltInZoomControls(true);
+        webView = (WebView) findViewById(R.id.webViewPin);
+        webView.getSettings().setBuiltInZoomControls(true);
 
 
-        RequestTokenTask task = (RequestTokenTask) new RequestTokenTask().execute();
+        Model.getInstance();
 
-
-        buttonPin.setOnClickListener(new View.OnClickListener() {
+        webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onClick(View v) {
-                AccessTokenTask access = new AccessTokenTask();
-                access.execute();
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                if (url.startsWith("https://www.saxion.nl/pgrtwitter/authenticated")) {
+                    final Uri uri = Uri.parse(url);
 
+
+                    final String oAuthToken = uri.getQueryParameter("oauth_token");
+                    final String oAuthVerifier = uri.getQueryParameter("oauth_verifier");
+
+
+
+                    AccesTokenTask tokenTask = new AccesTokenTask(oAuthVerifier);
+                    tokenTask.execute();
+                }
+                return false;
             }
         });
+
+        final RequestTokenTask task = new RequestTokenTask();
+        task.execute();
+
+
+
+
+
+
+
+
 
 
 
@@ -70,11 +84,11 @@ public class AuthorizeActivity extends Activity {
         protected String doInBackground(String... params) {
 
             OAuthProvider provider = Model.getInstance().getoAuthProvider();
-            provider.setOAuth10a(true);
+
             String authURL = "";
 
             try {
-                authURL = provider.retrieveRequestToken(Model.getInstance().getoAuthConsumer(), OAuth.OUT_OF_BAND);
+                authURL = provider.retrieveRequestToken(Model.getInstance().getoAuthConsumer(), "https://www.saxion.nl/pgrtwitter/authenticated");
 
 
             } catch (OAuthMessageSignerException e) {
@@ -91,7 +105,6 @@ public class AuthorizeActivity extends Activity {
                 e.printStackTrace();
             }
 
-            Log.d("AUTHORIZATION URL: ", authURL);
 
             return authURL;
         }
@@ -99,58 +112,59 @@ public class AuthorizeActivity extends Activity {
         @Override
         protected void onPostExecute(String authUrl) {
 
-            webViewPin.getSettings().setBuiltInZoomControls(true);
-            webViewPin.loadUrl(authUrl);
+            webView.getSettings().setBuiltInZoomControls(true);
+            webView.loadUrl(authUrl);
 
 
         }
 
     }
 
+    private class AccesTokenTask extends AsyncTask<String, Void, String> {
 
-    private class AccessTokenTask extends AsyncTask<Void, Void, Void> {
 
+        protected String oAuthVerifier;
+        public AccesTokenTask(String verifier) {
+            this.oAuthVerifier = verifier;
 
+        }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected String doInBackground(String... params) {
+
 
 
             try {
-                // get token
-                Model.getInstance().getoAuthProvider().retrieveAccessToken(Model.getInstance().getoAuthConsumer(), editTextPin.getText().toString());
+                Model.getInstance().getoAuthProvider().retrieveAccessToken(Model.getInstance().getoAuthConsumer(), oAuthVerifier);
 
             } catch (OAuthMessageSignerException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (OAuthNotAuthorizedException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (OAuthExpectationFailedException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (OAuthCommunicationException e) {
+                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
+            Log.d("CONSUMER SECRET", " JE KK MOEDRERR");
             return null;
 
 
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
+        protected void onPostExecute(String authUrl) {
 
-            // save tokens
-            final SharedPreferences.Editor editor = getSharedPreferences(Resources.SHARED_PREFERENCES, MODE_PRIVATE).edit();
+        startActivity(new Intent(AuthorizeActivity.this, CommunicationActivity.class));
 
-            String token = Model.getInstance().getoAuthConsumer().getToken();
-            String tokenSecret = Model.getInstance().getoAuthConsumer().getTokenSecret();
 
-            editor.clear();
-            editor.putString(OAuth.OAUTH_TOKEN, token);
-            editor.putString(OAuth.OAUTH_TOKEN_SECRET, tokenSecret);
-            editor.commit();
-
-            startActivity(new Intent(AuthorizeActivity.this, CommunicationActivity.class));
         }
+
     }
+
 
 }

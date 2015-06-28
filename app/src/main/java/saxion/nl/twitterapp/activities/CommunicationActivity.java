@@ -12,11 +12,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 
 import java.io.IOException;
-
-import oauth.signpost.OAuth;
 import oauth.signpost.OAuthConsumer;
-import oauth.signpost.OAuthProvider;
-import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
 import oauth.signpost.exception.OAuthCommunicationException;
 import oauth.signpost.exception.OAuthExpectationFailedException;
 import oauth.signpost.exception.OAuthMessageSignerException;
@@ -38,7 +34,9 @@ public class CommunicationActivity extends FragmentActivity{
             httpClient = new DefaultHttpClient(new BasicHttpParams());
 
 
-        TaskGet taskGet = (TaskGet) new TaskGet("https://api.twitter.com/1.1/statuses/mentions_timeline.json").execute();
+        TaskGet taskGet = new TaskGet("https://api.twitter.com/1.1/statuses/mentions_timeline.json");
+        taskGet.execute();
+
 
 
 
@@ -78,6 +76,9 @@ public class CommunicationActivity extends FragmentActivity{
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+
+            Log.d("CONSUMER SECRET", Model.getInstance().getoAuthConsumer().getTokenSecret());
             Log.d("COMMACTIVITY", response.getStatusLine().toString());
 
             return response.getStatusLine().toString();
